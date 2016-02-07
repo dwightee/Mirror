@@ -1,54 +1,104 @@
-MagicMirror
-===========
+# Smart Mirror
 
-##Introduction
+[![Join the chat at https://gitter.im/evancohen/smart-mirror](https://badges.gitter.im/evancohen/smart-mirror.svg)](https://gitter.im/evancohen/smart-mirror?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-The super magic interface of my personal Magic Mirror. More information about this project can be found on my [blog](http://michaelteeuw.nl/tagged/magicmirror).
+This project was inspired by [HomeMirror](https://github.com/HannahMitt/HomeMirror) and Michael Teeuw's [Magic Mirror](http://michaelteeuw.nl/tagged/magicmirror). It uses [annyang](https://github.com/TalAter/annyang) for voice interactivity, [electron](http://electron.atom.io/) to make it cross platform, and integrates with Philips Hue. It is my own take on what a "smart mirror" can be.
 
-Runs as a php script on a web server with basically no external dependencies. *Can use socket.io for XBEE integration, but isn't required for basic functionality*.
+[See it in action (Video)](https://www.youtube.com/watch?v=PDIbhV8Nvq8)
 
+#### Why start from scratch?
+Starting from scratch was less about other projects not being good enough and more about my own learning experience. While I did get a lot of inspiration from other projects I really wanted to see how much further I could take things.
 
-##Configuration
+#### Gitter:
+A live chat to get help and discuss mirror related issues: https://gitter.im/evancohen/smart-mirror. Usually there are a few folks hanging around in the lobby, but if there arent you are probubly better off [filing an issue](https://github.com/evancohen/smart-mirror/issues/new).
 
-Modify `js/config.js` to change some general variables (language, weather location, compliments, news feed RSS and to add your own ICS calendars)
+### Getting Started
+#### Hardware Components
+- Raspberry Pi 2**
+- USB Microphone (Or Webcam w/ microphone)
+- Monitor (with the bezel removed)
+- Mirror Pane (aka Observation Glass)
+- Philips Hue
 
-To use the OpenWeatherMap API, you'll need a free API key. Checkout [this blogpost](http://michaelteeuw.nl/post/131504229357/what-happened-to-the-weather) for more information.
+** Also compatible with other Linux, Windows, and OSX devices. See the `cordova` branch for Android and iOS compatibility.
 
-##Code
+#### Installation
+In order to get started I suggest a clean install of Raspbian. You can snag a fresh copy of Jessie (recommended, it's the future) or Wheezy from the [Raspbian Download Page](https://www.raspberrypi.org/downloads/raspbian/).
 
-###[main.js](js/main.js)
+You'll also need to install Node (v4.0.0+) which now comes bundled with npm.
+```
+wget https://nodejs.org/dist/v4.0.0/node-v4.0.0-linux-armv7l.tar.gz 
+tar -xvf node-v4.0.0-linux-armv7l.tar.gz 
+cd node-v4.0.0-linux-armv7l
+```
+Copy to /usr/local
+```
+sudo cp -R * /usr/local/
+```
 
-This file initiates the separate pieces of functionality that will appear in the view.  It also includes various utility functions that are used to update what is visible.
+##### Getting the code
+Next up you'll want to clone this repository into your user's home folder on your Pi:
+```
+cd ~
+git clone https://github.com/evancohen/smart-mirror.git
+```
 
-###[Calendar](js/calendar)
+##### Configuring the mirror
+You'll need to fill in two things into `js/config.js`:
 
-Parsing functionality for the calendar that retrieves and updates the calendar based on the interval set at the top of the [calendar.js](js/calendar/calendar.js) file. This was actually a straight pull from the original main.js file but the parsing code may deserve an upgrade.
+1. A [Forecast API key](https://developer.forecast.io/) (don't worry it's free)
+2. Philips Hue Bridge IP address with a configured user. Details about how to set this up in the [Philips Hue Developer Documentation](http://www.developers.meethue.com/documentation/getting-started)
+3. [Optional] An array of iCal addresses (from your Google or Outlook calendar for example)
 
-###[Compliments](js/compliments)
+The format of your config should look something like this:
+```
+var FORCAST_API_KEY = "a6s5dg39j78qj38sjs91je9djadfa1e";
+var HUE_BASE = "http://192.168.1.99/api/as9234ho0dfhoq01f2as3yh4m0/";
+var PERSONAL_CALENDAR = ["https://calendar.google.com/calendar/ical/SOMESTUFF/basic.ics",
+"https://outlook.office365.com/owa/calendar/SOMESTUFF/reachcalendar.ics"];
+```
+##### Configuring the Pi
+In order to rotate your monitor you'll need to add the following line to `/boot/config.txt`
+```
+display_rotate=1
+```
+You can also set this value to '3' to have a flipped vertical orientation.
 
-Functionality related to inserting compliments into the view and rotating them based on a specific interval set at the top of the [compliments.js](js/compliments/compliments.js) file.
+In order to disable the screensaver you'll want to comment out (with a '#') the `@xscreensaver` and `@lxpanel` lines in `/etc/xdg/lxsession/LXDE/autostart`. You'll also want to add the following lines to that same file
+```
+@xset s off
+@xset -dpms
+@xset s noblank
+```
 
-###[News](js/news)
+##### Install dependencies and run
+Before we can run the thing we've got to install the projects dependencies. From the root of the `smart-mirror` directory run:
+```
+npm install
+```
 
-Takes an array of news feeds (or a single string) from the config file and retrieves each one so that it can be displayed in a loop based on the interval set at the top of the [news.js](js/news/news.js) file.
+This will take a minute, it has to download [electron-prebuilt](https://github.com/mafintosh/electron-prebuilt). Once that is done you can launch the mirror with
+```
+npm start
+```
 
-###[Time](js/time)
+#### Development
+To launch the mirror with a debug window attached use the following command:
+```
+npm start dev
+```
+More info coming soon(ish). In the meantime head over to the [gitter chat](https://gitter.im/evancohen/smart-mirror) for help. 
 
-Updates the time on the screen on one second interval. Can be changed to omit displaying seconds by adding the config option ```displaySeconds = false``` in [config.js](js/config.js). When the seconds are disabled the interval is set to 60 seconds on the full minute.
+#### Troubleshooting
+If you are having trouble getting a USB microphone to work on your Pi try following [these steps](https://github.com/evancohen/smart-mirror/issues/20)
 
-With the option ```digitFade = true```, changing digits are faded. This looks best if the seconds are omitted.
+### License
+MIT
 
-###[Version](js/version)
+### Author
+[Evan Cohen](http://evanbtcohen.com/)
 
-Checks the git version and refreshes if a new version has been pulled.
+### More info
+Favicon from [In the Wake of the King](http://walkingmind.evilhat.com/2014/03/17/in-the-wake-of-the-king/), a head nod to **The Watcher** – "A byblow of the king and a queen of the sea, she has remained apart from the workings of her family, more home beneath the waves, watching all through water and mirror. Her ambitions lie outside the Eternal Kingdom, but her secrets are valuable everywhere."
 
-###[Weather](js/weather)
-
-Takes the user's inserted location, language, unit type, and OpenWeatherMap API key and grabs the five day weather forecast from OpenWeatherMap. You need to set the API key in the config for this to work. (See *configuration*.)
-
-##Modules
-
-###[MagicMirror-Modules by PaViRo](https://github.com/paviro/MagicMirror-Modules)
-
-**Current features:** FRITZ!Box Callmonitor <br>
-**Future features:** Faceregognition, personalized views, online banking through HBCI and multiple calenders based on faceregognition.
+Awesome.
