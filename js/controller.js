@@ -1,7 +1,7 @@
 (function(angular) {
     'use strict';
 
-    function MirrorCtrl(AnnyangService, GeolocationService, WeatherService, MapService, HueService, CalendarService, $scope, $timeout, $interval) {
+    function MirrorCtrl(AnnyangService, GeolocationService, WeatherService, MapService, CalendarService, $scope, $timeout, $interval) {
         var _this = this;
         var DEFAULT_COMMAND_TEXT = 'Say "What can I say?" to see a list of commands...';
         $scope.listening = false;
@@ -27,7 +27,6 @@
         _this.init = function() {
             var tick = $interval(updateTime, 1000);
             updateTime();
-            $scope.map = MapService.generateMap("Seattle,WA");
             _this.clearResults();
             restCommand();
 
@@ -52,9 +51,6 @@
             };
 
             $timeout(refreshMirrorData(), 3600000);
-
-            //Initiate Hue communication
-            HueService.init();
 
             var defaultView = function() {
                 console.debug("Ok, going to default view...");
@@ -86,40 +82,6 @@
                 $scope.debug = true;
             });
 
-            // Hide everything and "sleep"
-            AnnyangService.addCommand('Show map', function() {
-                console.debug("Going on an adventure?");
-                $scope.focus = "map";
-            });
-
-            // Hide everything and "sleep"
-            AnnyangService.addCommand('Show (me a) map of *location', function(location) {
-                console.debug("Getting map of", location);
-                $scope.map = MapService.generateMap(location);
-                $scope.focus = "map";
-            });
-
-            // Zoom in map
-            AnnyangService.addCommand('(map) zoom in', function() {
-                console.debug("Zoooooooom!!!");
-                $scope.map = MapService.zoomIn();
-            });
-
-            AnnyangService.addCommand('(map) zoom out', function() {
-                console.debug("Moooooooooz!!!");
-                $scope.map = MapService.zoomOut();
-            });
-
-            AnnyangService.addCommand('(map) zoom (to) *value', function(value) {
-                console.debug("Moooop!!!", value);
-                $scope.map = MapService.zoomTo(value);
-            });
-
-            AnnyangService.addCommand('(map) reset zoom', function() {
-                console.debug("Zoooommmmmzzz00000!!!");
-                $scope.map = MapService.reset();
-                $scope.focus = "map";
-            });
 
             // Search images
             AnnyangService.addCommand('Show me *term', function(term) {
@@ -152,11 +114,6 @@
             AnnyangService.addCommand('what time is it', function(task) {
                  console.debug("It is", moment().format('h:mm:ss a'));
                  _this.clearResults();
-            });
-
-            // Turn lights off
-            AnnyangService.addCommand('(turn) (the) :state (the) light(s) *action', function(state, action) {
-                HueService.performUpdate(state + " " + action);
             });
 
             // Fallback for all commands
