@@ -18,6 +18,7 @@
     <script src="js/calendar-service.js"></script>
     <script src="js/dateFormatFilter.js"></script>
     <script src="js/controller.js"></script>
+    <script src="js/news.js"></script>
     <!-- Styles and Resources -->
     <link rel="shortcut icon" href="favicon.ico" />
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,800,700' rel='stylesheet' type='text/css'>
@@ -57,8 +58,10 @@
     <div class="container">
       <div class="middle-center">
         <h1>{{complement}}</h1>
+        <h2 ng-show="focus == 'whoIs'">{{isBeautiful}}</h2>
         <h3 ng-show="!(user.name === undefined)">{{user.name}}</h3>
         <!-- <div class="listening" ng-show="listening">Ready: {{focus}}</div> -->
+        <div class="news"></div>
       </div>
       <div class="bottom-center">
         <!-- Command list -->
@@ -75,7 +78,6 @@
             <dd>Add something to the reminders list.</dd>
             <dt>Clear reminders</dt>
             <dd>Clears out your reminders list.</dd>
-            <dt>Show map</dt>
           </dl>
           <small>
             We are using node <script>document.write(process.versions.node)</script>,

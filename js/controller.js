@@ -1,12 +1,13 @@
 (function(angular) {
     'use strict';
 
-    function MirrorCtrl(AnnyangService, GeolocationService, WeatherService, CalendarService, $scope, $timeout, $interval) {
+    function MirrorCtrl(AnnyangService, GeolocationService, WeatherService, NewsService, CalendarService, $scope, $timeout, $interval) {
         var _this = this;
         var DEFAULT_COMMAND_TEXT = 'Say "What can I say?" to see a list of commands...';
         $scope.listening = false;
         $scope.debug = false;
         $scope.complement = "Hi, sexy!"
+        $scope.isBeautiful = "You are the fairest and most beautiful of them all";
         $scope.focus = "default";
         $scope.user = {};
         $scope.interimResult = DEFAULT_COMMAND_TEXT;
@@ -72,6 +73,12 @@
                 console.debug("Ok, going to sleep...");
                 $scope.focus = "sleep";
             });
+
+            //mirror who is
+            AnnyangService.addCommand('Mirror, mirror on the wall, who’s the fairest of them all', function(){
+                console.log("You are the most.....");
+                $scope.focus = "whoIs";
+            })
 
             // Go back to default view
             AnnyangService.addCommand('Wake up', defaultView);

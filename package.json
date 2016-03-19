@@ -1,14 +1,14 @@
 {
   "name": "smart-mirror",
   "version": "0.0.1",
-  "description": "The fairest of them all",
+  "description": "truth of your own reflection",
   "main": "main.js",
   "scripts": {
     "start": "electron main.js "
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/evancohen/smart-mirror.git"
+    "url": "git+https://github.com/dwightee/Mirror.git"
   },
   "keywords": [
     "Electron",
@@ -16,12 +16,12 @@
     "start",
     "tutorial"
   ],
-  "author": "Evan Cohen",
+  "author": "Matt Dwight",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/evancohen/smart-mirror/issues"
+    "url": "https://github.com/dwightee/Mirror/issues"
   },
-  "homepage": "https://github.com/evancohen/smart-mirror",
+  "homepage": "https://github.com/dwightee/Mirror",
   "devDependencies": {
     "electron-prebuilt": "^0.36.5"
   }

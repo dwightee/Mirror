@@ -92,6 +92,12 @@ dt {
     justify-content: center;
 }
 
+.news{
+    border: solid red;
+    width: 200px;
+    height: 200px;
+}
+
 .bottom-center {
     font-family: 'Open Sans', sans-serif;
     width: 100%;
