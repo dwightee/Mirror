@@ -61,7 +61,7 @@
         <h2 ng-show="focus == 'whoIs'">{{isBeautiful}}</h2>
         <h3 ng-show="!(user.name === undefined)">{{user.name}}</h3>
         <!-- <div class="listening" ng-show="listening">Ready: {{focus}}</div> -->
-        <div class="news"></div>
+        <div class="news" ng-show="focus == 'news'"></div>
       </div>
       <div class="bottom-center">
         <!-- Command list -->
@@ -72,12 +72,12 @@
             <dd>Shows a list of voice commands available to you.</dd>
             <dt>Go home</dt>
             <dd>Takes you back to the home screen</dd>
-            <dt>Show me ________</dt>
-            <dd>Will show you pictures of the requested item.</dd>
             <dt>Remind me to ________</dt>
             <dd>Add something to the reminders list.</dd>
             <dt>Clear reminders</dt>
             <dd>Clears out your reminders list.</dd>
+            <dt>Show news (not ready yet)</dt>
+            <dd>Showing the news.</dd>
             <dt>Mirror, mirror on the wall, who’s the fairest of them all</dt>
             <dd>Tells you the truth about yout beauty</dd>
           </dl>

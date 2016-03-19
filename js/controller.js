@@ -75,9 +75,15 @@
             });
 
             //mirror who is
-            AnnyangService.addCommand('Mirror, mirror on the wall, who’s the fairest of them all', function(){
+            AnnyangService.addCommand('Mirror mirror', function(){
                 console.log("You are the most.....");
                 $scope.focus = "whoIs";
+            })
+
+            //show news
+            AnnyangService.addCommand('show news', function(){
+                console.log("Showing news.....");
+                $scope.focus = "news";
             })
 
             // Go back to default view
