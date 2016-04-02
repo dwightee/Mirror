@@ -71,6 +71,7 @@
             // Hide everything and "sleep"
             AnnyangService.addCommand('Go to sleep', function() {
                 console.debug("Ok, going to sleep...");
+                exec("/opt/vc/bin/tvservice -p && /opt/vc/bin/tvservice -o", puts);
                 $scope.focus = "sleep";
             });
 
@@ -87,7 +88,10 @@
             })
 
             // Go back to default view
-            AnnyangService.addCommand('Wake up', defaultView);
+            AnnyangService.addCommand('Wake up', function(){
+                defaultView();
+                exec("/opt/vc/bin/tvservice -p && chvt 1 && chvt 7", puts);
+            });
 
             // Hide everything and "sleep"
             AnnyangService.addCommand('Show debug information', function() {
